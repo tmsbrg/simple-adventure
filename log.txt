@@ -1,0 +1,31 @@
+2014-05-24
+
+Added regions, so you can move from region to region with maps. Different
+    regions contain different enemies
+Added story and ability to win the game
+Added killtracking for each type of enemy
+Fixed bug where you could use items in the 'use items' or 'select target'
+    menus, which made the game not pass a turn
+
+2014-05-23
+
+Made items targetable, so you can throw bombs at enemies and such
+Buffed health powerups
+added documentation to settings
+added numerous items and enemies
+improved help message
+made log
+
+2014-05-21
+
+Added items that the player can use
+
+2014-05-20
+
+Added loot that enemies drop and can boost player stats
+Added colors for health, damage, etc.
+
+2014-05-19
+
+Added basic gameplay, no way to influence to game, just attacking and letting
+    the enemy attack
