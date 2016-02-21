@@ -1,12 +1,4 @@
 #!/usr/bin/python3
-#TODO: 
-#   - 'l' to repeat last info about enemy or loot
-#   - settings file not python
-#   - Afflictions for characters(can stun them, poison them, etc)
-#   - combine 'i' and 'u'(use items in inventory)
-#   - ability to view item stats
-#   - ability to drop items
-#   - ability to flee
 import random
 import readline
 
