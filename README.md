@@ -3,6 +3,8 @@ Simple Adventure
 
 Simple command line adventure game made in Python 3
 
+![Screenshot](screenshot.png)
+
 Playing the game:
 -----------------
 
