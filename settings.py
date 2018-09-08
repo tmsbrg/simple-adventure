@@ -172,7 +172,7 @@ darkness = Region("the Darkness",
 # world
 world = World("Earth", "the Green Fields", [greenfields, orclands, darkness])
 
-player = Character("Player", {"health": 6000, "maximum attack": 6})
+player = Character("Player", {"health": 60, "maximum attack": 6})
 player.pickupLoot(beginners_knife, False)
 
 lootAmount = 2
