@@ -17,6 +17,7 @@ class Character:
         self.setStatsDefaults()
         self.kills = {}
         self.equipment = {}
+        self.status = {}
 
     def setStatsDefaults(self):
         self.setDefaultStat("health", 50)
@@ -46,8 +47,29 @@ class Character:
         elif stat == "health":
             self.checkDeath(self.name+" "+deathMessage, printIt)
 
+    def setStatus(self, status, turns):
+        if status not in self.status or self.status[status] < turns:
+            print(self.name," is ",status,"!", sep="")
+            self.status[status] = turns
+
+    def removeStatus(self, status):
+        if status in self.status:
+            print(self.name,"is no longer",status)
+            del self.status[status]
+
+    def reduceStatuses(self):
+        removestatus = []
+        for status in self.status:
+            self.status[status] -= 1
+            if self.status[status] <= 0:
+                removestatus.append(status)
+        for status in removestatus:
+            self.removeStatus(status)
 
     def attack(self, target=None):
+        if "stunned" in self.status:
+            print(self.name,"cannot attack!")
+            return
         amount = random.randint(self.stats["minimum attack"],
                                 self.stats["maximum attack"])
         target.damage(amount, self)

@@ -54,6 +54,10 @@ class Loot:
                 self.useObject(self, character)
             elif self.useCommand == "win":
                 character.win()
+            elif self.useCommand == "set_status":
+                character.setStatus(self.useObject[0], self.useObject[1])
+            elif self.useCommand == "remove_status":
+                character.removeStatus(self.useObject[0])
             else:
                 raise exception.UnknownItemCommand(self.name, self.useCommand)
         else:

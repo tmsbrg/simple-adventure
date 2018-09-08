@@ -44,6 +44,8 @@ def main():
         currentEnemy = world.currentRegion.getRandomChar()
         print("\nAn evil",currentEnemy.name,"has appeared!")
         while True:
+            player.reduceStatuses()
+            currentEnemy.reduceStatuses()
             if player.getStat("health") < 10:
                 color = colors.CRITICAL
             elif player.getStat("health") < 30:

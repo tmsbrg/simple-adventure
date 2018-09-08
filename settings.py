@@ -131,7 +131,7 @@ orclands_map = Item("map to the Orclands", "move_to", "the Orclands")
 dark_map = Item("map to the Darkness", "move_to", "the Darkness")
 
 # misc
-spider_silk = Item("spider silk", "nothing", None, True) #TODO: add stun ability
+spider_silk = Item("spider silk", "set_status", ("stunned", 3), True)
 holy_artifact = Item("Holy Artifact", "win")
 bomb = Item("bomb", "damage", {"health":[20, 60]}, True)
 
