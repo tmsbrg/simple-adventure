@@ -7,8 +7,8 @@ from world import *
 # (see also the settings as they are below, you can start by editing those and
 #  seeing what happens)
 
-# LOOT CONSTRUCTOR:
-#   var_name = Loot("name", {"stat1": n, "stat2": n2, ...},
+# EQUIPMENT CONSTRUCTOR:
+#   var_name = Equipment("name", {"stat1": n, "stat2": n2, ...},
 #                   "slot")
 #
 #       where: "stat1", "stat2", ... are valid stat names* to increase with this
@@ -62,10 +62,10 @@ from world import *
 #   This is a list of commands currently in use, and the command_obj they use
 #       - "nothing", does nothing on use except saying that nothing happened,
 #                    ignores command_obj
-#       - "change_stats", takes set of stats like in the Loot constructor as
+#       - "change_stats", takes set of stats like in the Equipment constructor as
 #                         command_obj and adds them to the character it is
 #                         used on
-#       - "damage", takes a set of stats like in the Loot constructor, except
+#       - "damage", takes a set of stats like in the Equipment constructor, except
 #                   it takes 2 values for each stat, the minimum damage done
 #                   and the maximum damage done. e.g.:
 #                   e.g. {"health":[2,4], "defence":[1,3]} deals between 2 and 4
@@ -93,22 +93,22 @@ def randomize_name(self, character):
               "but you don't know what.")
 
 # weapons
-beginners_knife = Loot("beginner's knife", {"maximum attack": 10}, "weapon")
-rusty_axe = Loot("rusty axe", {"maximum attack":14}, "weapon")
-orcish_blade = Loot("orcish blade", {"maximum attack":18}, "weapon")
-scythe = Loot("Scythe", {"maximum attack":22}, "weapon")
-greatsword = Loot("greatsword", {"maximum attack":26}, "weapon")
+beginners_knife = Equipment("beginner's knife", {"maximum attack": 10}, "weapon")
+rusty_axe = Equipment("rusty axe", {"maximum attack":14}, "weapon")
+orcish_blade = Equipment("orcish blade", {"maximum attack":18}, "weapon")
+scythe = Equipment("Scythe", {"maximum attack":22}, "weapon")
+greatsword = Equipment("greatsword", {"maximum attack":26}, "weapon")
 
 # armor
-wizard_cloak = Loot("wizard's cloak", {"defence":2}, "armor")
-knight_armor = Loot("knight's armor", {"defence":6}, "armor")
+wizard_cloak = Equipment("wizard's cloak", {"defence":2}, "armor")
+knight_armor = Equipment("knight's armor", {"defence":6}, "armor")
 
 # shields
-shield = Loot("shield", {"defence":2}, "shield")
+shield = Equipment("shield", {"defence":2}, "shield")
 
 # helmets
-leather_helm = Loot("leather helm", {"defence": 2}, "helmet")
-iron_helm = Loot("iron helm", {"defence":4}, "helmet")
+leather_helm = Equipment("leather helm", {"defence": 2}, "helmet")
+iron_helm = Equipment("iron helm", {"defence":4}, "helmet")
 
 # buffs
 wolf_pelt = Item("wolf pelt", "change_stats", {"defence":1})
@@ -172,7 +172,7 @@ darkness = Region("the Darkness",
 # world
 world = World("Earth", "the Green Fields", [greenfields, orclands, darkness])
 
-player = Character("Player", {"health": 60, "maximum attack": 6})
-player.pickupItem(beginners_knife, False)
+player = Character("Player", {"health": 6000, "maximum attack": 6})
+player.pickupLoot(beginners_knife, False)
 
 lootAmount = 2

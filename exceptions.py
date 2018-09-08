@@ -4,12 +4,6 @@ class SadvException(Exception):
     def __str__(self):
         return self.string
 
-class ItemUnusable(SadvException):
-    def __init__(self, item):
-        super(ItemUnusable, self).__init__(
-            'Attempted to use unusable item "'+item+'"'
-        )
-
 class ItemNotInInventory(SadvException):
     def __init__(self, item):
         super(ItemNotInInventory, self).__init__(

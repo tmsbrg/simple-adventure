@@ -44,8 +44,6 @@ def main():
         currentEnemy = world.currentRegion.getRandomChar()
         print("\nAn evil",currentEnemy.name,"has appeared!")
         while True:
-            player.reduceStatuses()
-            currentEnemy.reduceStatuses()
             if player.getStat("health") < 10:
                 color = colors.CRITICAL
             elif player.getStat("health") < 30:
@@ -72,6 +70,8 @@ def advanceTurn():
         return True
     currentEnemy.attack(player)
     checkDeath()
+    player.reduceStatuses()
+    currentEnemy.reduceStatuses()
     return False
 
 
@@ -79,11 +79,11 @@ def getLoot(enemy):
     loot = enemy.dropLoot(settings.lootAmount)
     if len(loot) > 0:
         print("\nLoot(select one):")
-        item = printAndSelect(loot, "take none",
+        selected = printAndSelect(loot, "take none",
                               "Type the number of the loot you want to get,"
                               " and then enter")
-        if item != None:
-            player.pickupItem(item)
+        if selected != None:
+            player.pickupLoot(selected)
     else:
         print("\n",enemy.name," has no loot.", sep="")
         printAndSelect([], "continue",
@@ -98,16 +98,16 @@ def setPlayer(new_player):
 
 
 def selectAndUseItem():
-    items = player.getUsableItems()
+    items = player.items
     if len(items) > 0:
-        print("\nUsable items(Type number to use)")
+        print("\nUsable items (Type number to use)")
         while True: # allow us to go back to item selection
             item = printAndSelect(items, "do nothing", 
                                   "Type the number of the item you want to use,"
                                   "and then enter",
                                   ['u'])
             if item != None:
-                if item.isTargetable():
+                if item.targetable:
                     target = selectTarget()
                     if target == None:
                         continue # back to the item selection
@@ -191,12 +191,17 @@ def interpretInput(inp):
              "\n"
              "Press enter after entering a command.\n")
     elif inp[0] == 'i':
-        inv = player.getInventory()
-        if len(inv) > 0:
-            for key in inv:
-                print(key,": ",inv[key].name, sep='')
-        else:
-            print("\nNo items in inventory")
+        equipment = player.equipment
+        if len(equipment) > 0:
+            for key in equipment:
+                print(key,": ",equipment[key].name, sep='')
+        items = player.items
+        if len(items) > 0:
+            print("items: ")
+            for i in items:
+                print("\t",i.name, sep='')
+        if len(equipment) == 0 and len(items) == 0:
+            print("\nNothing in inventory")
     elif inp[0] == 's':
         player.printStats()
     elif inp[0] == 'u':

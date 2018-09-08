@@ -3,6 +3,7 @@ import sys
 from copy import copy
 
 from colors import colors
+from loot import *
 import exceptions
 
 class Character:
@@ -17,6 +18,7 @@ class Character:
         self.setStatsDefaults()
         self.kills = {}
         self.equipment = {}
+        self.items = []
         self.status = {}
 
     def setStatsDefaults(self):
@@ -124,52 +126,54 @@ class Character:
     def moveToRegion(self, regionName, world, other=None):
         if world == None:
             raise exceptions.MovingWithoutWorld(self.name, regionName)
-        if regionName != world.currentRegion.name:
-            if self.isPlayer:
-                world.setCurrentRegion(regionName)
-                print("Moved to ",colors.REGIONTEXT,regionName,colors.ENDC,
-                      sep="")
-                if other != None:
-                    other.moveAway()
-            elif not self.dead:
+        if not self.isPlayer:
+            if not self.dead:
                 self.moveAway("fled away")
+            return
+        if regionName != world.currentRegion.name:
+            world.setCurrentRegion(regionName)
+            print("Moved to ",colors.REGIONTEXT,regionName,colors.ENDC,
+                  sep="")
+            if other != None:
+                other.moveAway()
         else:
-            print("Already in that region!")
+            if other != None:
+                print("Fled from enemy.")
+                other.moveAway()
+            else:
+                print("Already in that region!")
 
     def moveAway(self, message=None):
         if message != None:
             print(self.name,message)
         self.movedAway = True
     
-    def pickupItem(self, item, printIt = True):
-        if item.slot in self.equipment:
-            self.equipment[item.slot].getDiscardedBy(self, printIt)
-        self.equipment[item.slot] = item
-        item.getEquippedOn(self, printIt)
+    def pickupLoot(self, loot, printIt = True):
+        if isinstance(loot, Equipment):
+            equip = loot
+            if equip.slot in self.equipment:
+                self.equipment[equip.slot].getDiscardedBy(self, printIt)
+            self.equipment[equip.slot] = equip
+            equip.getEquippedOn(self, printIt)
+        elif isinstance(loot, Item):
+            self.items.append(loot)
 
     def useItem(self, item, target=None, world=None, other=None):
         if target == None:
             target = self
-        if item in self.equipment.values():
-            item.getUsedOn(target, world, other)
-            item.getDiscardedBy(self, False)
-            del self.equipment[item.slot]
-            self.checkDeath(self.getDeathMessage(self))
-        else:
+        item_index = -1
+        for i in range(len(self.items)):
+            if self.items[i] is item:
+                item_index = i
+                break
+        if item_index == -1:
             raise exceptions.ItemNotInInventory(item.name)
+        item.getUsedOn(target, world, other)
+        self.checkDeath(self.getDeathMessage(self))
+        del self.items[item_index]
 
     def getStat(self, stat):
         return self.stats[stat]
-
-    def getUsableItems(self):
-        r = []
-        for item in self.equipment.values():
-            if item.canBeUsed():
-                r.append(item)
-        return r
-
-    def getInventory(self):
-        return self.equipment
 
     def printStats(self):
         for stat in self.stats:
